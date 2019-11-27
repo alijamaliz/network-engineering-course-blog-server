@@ -1,11 +1,14 @@
 'use strict';
 
+const PostService = require('../services/post');
+
 class PostController {
     /**
-     * User API Middlewares
+     * Post API Middlewares
      */
     constructor() {
         this.getAllPosts = this.getAllPosts.bind(this);
+        this.postService = new PostService();
     }
 
     /**
@@ -13,8 +16,8 @@ class PostController {
      * @param  {Object} req
      * @param  {Object} res
      */
-    getAllPosts(req, res) {
-        res.status(200).send("All posts");
+    async getAllPosts(req, res) {
+        res.status(200).send(await this.postService.getAllPosts());
     }
 }
 
