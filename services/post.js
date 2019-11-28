@@ -2,6 +2,8 @@
 
 const DBHelper = require('../helper/db');
 const Exceptions = require('../util/exceptions');
+const Types = require('../util/types');
+const LongPollingController = require('../controllers/long-polling');
 
 class PostService {
     /**
@@ -52,7 +54,10 @@ class PostService {
                     VALUES ($1, $2, current_timestamp, NULL) RETURNING *`,
                     [post.title, post.description]
                 )
-                .then(res => resolve(res.rows[0]))
+                .then(res => {
+                    LongPollingController.notify(Types.NEW_POST, res.rows[0]);
+                    resolve(res.rows[0]);
+                })
                 .catch(err => reject(err));
         });
     }
