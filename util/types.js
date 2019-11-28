@@ -1,0 +1,3 @@
+exports.NEW_POST = 'NEW_POST';
+exports.UPDATE_POST = 'UPDATE_POST';
+exports.DELETE_POST = 'DELETE_POST';
