@@ -56,6 +56,22 @@ class PostService {
                 .catch(err => reject(err));
         });
     }
+
+    /**
+     * Delete specifoc post by id
+     * @param  {Number} postId
+     */
+    async deleteSpecificPostById(postId) {
+        return new Promise((resolve, reject) => {
+            this.db
+                .query(`DELETE FROM posts WHERE id=$1`, [postId])
+                .then(res => {
+                    if (res.rowCount > 0) resolve();
+                    else throw new Exceptions.NotFoundException();
+                })
+                .catch(err => reject(err));
+        });
+    }
 }
 
 module.exports = PostService;

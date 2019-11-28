@@ -10,7 +10,12 @@ class Api {
      */
     constructor(app) {
         this.router = new Router();
-        const { getAllPosts, getSpecificPost, createNewPost } = new PostController(app);
+        const {
+            getAllPosts,
+            getSpecificPost,
+            createNewPost,
+            deleteSpecificPost
+        } = new PostController(app);
 
         this.router.use(
             '/',
@@ -18,6 +23,7 @@ class Api {
                 .get('/', getAllPosts)
                 .post('/', createNewPost)
                 .get('/:postId', getSpecificPost)
+                .delete('/:postId', deleteSpecificPost)
         );
 
         return this.router;

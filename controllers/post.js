@@ -13,6 +13,7 @@ class PostController {
         this.getAllPosts = this.getAllPosts.bind(this);
         this.getSpecificPost = this.getSpecificPost.bind(this);
         this.createNewPost = this.createNewPost.bind(this);
+        this.deleteSpecificPost = this.deleteSpecificPost.bind(this);
     }
 
     /**
@@ -65,6 +66,24 @@ class PostController {
                 res.status(403).send(JSON.parse(String(exception)));
             }
             res.status(403).end();
+        }
+    }
+
+    /**
+     * Delete specific posts
+     * @param  {Object} req
+     * @param  {Object} res
+     */
+    async deleteSpecificPost(req, res) {
+        let postId = req.params.postId;
+        try {
+            await this.postService.deleteSpecificPostById(postId);
+            res.status(201).end();
+        } catch (exception) {
+            if (exception instanceof Exceptions.NotFoundException) {
+                res.status(404).send(JSON.parse(String(exception)));
+            }
+            res.status(401).end();
         }
     }
 }
