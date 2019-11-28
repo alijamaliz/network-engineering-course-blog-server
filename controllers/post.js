@@ -12,6 +12,7 @@ class PostController {
 
         this.getAllPosts = this.getAllPosts.bind(this);
         this.getSpecificPost = this.getSpecificPost.bind(this);
+        this.createNewPost = this.createNewPost.bind(this);
     }
 
     /**
@@ -38,6 +39,32 @@ class PostController {
                 res.status(404).send(JSON.parse(String(exception)));
             }
             res.status(401).end();
+        }
+    }
+
+    /**
+     * Create new post
+     * @param  {Object} req
+     * @param  {Object} res
+     */
+    async createNewPost(req, res) {
+        try {
+            if (!req.body.title) throw new Exceptions.FieldException('title');
+            if (!req.body.description) throw new Exceptions.FieldException('description');
+
+            const post = {
+                title: req.body.title,
+                description: req.body.description,
+                image: req.body.image || null
+            };
+
+            const newPost = await this.postService.createNewPost(post);
+            res.status(200).send(newPost);
+        } catch (exception) {
+            if (exception instanceof Exceptions.FieldException) {
+                res.status(403).send(JSON.parse(String(exception)));
+            }
+            res.status(403).end();
         }
     }
 }

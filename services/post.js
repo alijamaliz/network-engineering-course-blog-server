@@ -39,6 +39,23 @@ class PostService {
                 .catch(err => reject(err));
         });
     }
+
+    /**
+     * Create new post
+     * @param {Object} post
+     */
+    async createNewPost(post) {
+        return new Promise((resolve, reject) => {
+            this.db
+                .query(
+                    `INSERT INTO posts (title, description, create_date, image_path)
+                    VALUES ($1, $2, current_timestamp, NULL) RETURNING *`,
+                    [post.title, post.description]
+                )
+                .then(res => resolve(res.rows[0]))
+                .catch(err => reject(err));
+        });
+    }
 }
 
 module.exports = PostService;

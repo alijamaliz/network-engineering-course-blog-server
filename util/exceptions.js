@@ -19,3 +19,11 @@ class NotFoundException extends Exception {
 }
 
 exports.NotFoundException = NotFoundException;
+
+class FieldException extends Exception {
+    constructor(fieldName) {
+        super('Field exception', `Field ${fieldName} is required`);
+    }
+}
+
+exports.FieldException = FieldException;

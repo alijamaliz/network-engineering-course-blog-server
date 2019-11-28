@@ -10,9 +10,15 @@ class Api {
      */
     constructor(app) {
         this.router = new Router();
-        const { getAllPosts, getSpecificPost } = new PostController(app);
+        const { getAllPosts, getSpecificPost, createNewPost } = new PostController(app);
 
-        this.router.use('/', new Router().get('/', getAllPosts).get('/:postId', getSpecificPost));
+        this.router.use(
+            '/',
+            new Router()
+                .get('/', getAllPosts)
+                .post('/', createNewPost)
+                .get('/:postId', getSpecificPost)
+        );
 
         return this.router;
     }
