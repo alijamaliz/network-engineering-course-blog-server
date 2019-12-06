@@ -1,6 +1,6 @@
 'use strict';
 
-const responsesPool = [];
+let responsesPool = [];
 
 class LongPollingController {
     /**
@@ -23,6 +23,7 @@ class LongPollingController {
         for (let i = 0; i < responsesPool.length; i++) {
             responsesPool[i].status(200).send({ type, data });
         }
+        responsesPool = [];
     }
 }
 
