@@ -77,6 +77,38 @@ class PostService {
                 .catch(err => reject(err));
         });
     }
+
+    /**
+     * Like specifoc post by id
+     * @param  {Number} postId
+     */
+    async likeSpecificPostById(postId) {
+        return new Promise((resolve, reject) => {
+            this.db
+                .query(`UPDATE posts SET likes = likes + 1 WHERE id=$1 RETURNING *`, [postId])
+                .then(res => {
+                    if (res.rowCount > 0) resolve(res.rows[0]);
+                    else throw new Exceptions.NotFoundException();
+                })
+                .catch(err => reject(err));
+        });
+    }
+
+    /**
+     * Unlike specifoc post by id
+     * @param  {Number} postId
+     */
+    async unlikeSpecificPostById(postId) {
+        return new Promise((resolve, reject) => {
+            this.db
+                .query(`UPDATE posts SET likes = likes - 1 WHERE id=$1 RETURNING *`, [postId])
+                .then(res => {
+                    if (res.rowCount > 0) resolve(res.rows[0]);
+                    else throw new Exceptions.NotFoundException();
+                })
+                .catch(err => reject(err));
+        });
+    }
 }
 
 module.exports = PostService;

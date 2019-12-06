@@ -14,6 +14,8 @@ class PostController {
         this.getSpecificPost = this.getSpecificPost.bind(this);
         this.createNewPost = this.createNewPost.bind(this);
         this.deleteSpecificPost = this.deleteSpecificPost.bind(this);
+        this.likeSpecificPost = this.likeSpecificPost.bind(this);
+        this.unlikeSpecificPost = this.unlikeSpecificPost.bind(this);
     }
 
     /**
@@ -79,6 +81,42 @@ class PostController {
         try {
             await this.postService.deleteSpecificPostById(postId);
             res.status(201).end();
+        } catch (exception) {
+            if (exception instanceof Exceptions.NotFoundException) {
+                res.status(404).send(JSON.parse(String(exception)));
+            }
+            res.status(401).end();
+        }
+    }
+
+    /**
+     * Like specific posts
+     * @param  {Object} req
+     * @param  {Object} res
+     */
+    async likeSpecificPost(req, res) {
+        let postId = req.params.postId;
+        try {
+            const post = await this.postService.likeSpecificPostById(postId);
+            res.status(200).send(post);
+        } catch (exception) {
+            if (exception instanceof Exceptions.NotFoundException) {
+                res.status(404).send(JSON.parse(String(exception)));
+            }
+            res.status(401).end();
+        }
+    }
+
+    /**
+     * Unlike specific posts
+     * @param  {Object} req
+     * @param  {Object} res
+     */
+    async unlikeSpecificPost(req, res) {
+        let postId = req.params.postId;
+        try {
+            const post = await this.postService.unlikeSpecificPostById(postId);
+            res.status(200).send(post);
         } catch (exception) {
             if (exception instanceof Exceptions.NotFoundException) {
                 res.status(404).send(JSON.parse(String(exception)));

@@ -14,7 +14,9 @@ class Api {
             getAllPosts,
             getSpecificPost,
             createNewPost,
-            deleteSpecificPost
+            deleteSpecificPost,
+            likeSpecificPost,
+            unlikeSpecificPost
         } = new PostController(app);
 
         this.router.use(
@@ -24,6 +26,8 @@ class Api {
                 .post('/', createNewPost)
                 .get('/:postId', getSpecificPost)
                 .delete('/:postId', deleteSpecificPost)
+                .post('/:postId/like', likeSpecificPost)
+                .post('/:postId/unlike', unlikeSpecificPost)
         );
 
         return this.router;
