@@ -87,7 +87,10 @@ class PostService {
             this.db
                 .query(`UPDATE posts SET likes = likes + 1 WHERE id=$1 RETURNING *`, [postId])
                 .then(res => {
-                    if (res.rowCount > 0) resolve(res.rows[0]);
+                    if (res.rowCount > 0) {
+                        LongPollingController.notify(Types.LIKE_POST, res.rows[0]);
+                        resolve(res.rows[0]);
+                    }
                     else throw new Exceptions.NotFoundException();
                 })
                 .catch(err => reject(err));
