@@ -1,9 +1,11 @@
 'use strict';
 const bodyParser = require('body-parser');
+var cors = require('cors');
 const PostRoutes = require('./post');
 const LongPollingRoutes = require('./long-polling');
 
 module.exports = app => {
+    app.use(cors());
     app.use(bodyParser.json());
     app.use(
         bodyParser.urlencoded({
